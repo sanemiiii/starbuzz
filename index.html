@@ -13,15 +13,13 @@
 </head>
 <body>
   <header id="site-header">
-    <img src="https://i.imgur.com/FK0jx0g.jpg" alt="Chibi Yuta" id="header-avatar">
+    <img src="images/avatar1.png" alt="Chibi Yuta" id="header-avatar" style="display:none;">
     <h1 id="site-title">Starbuzz</h1>
   </header>
 
   <div id="auth-container">
     <h2>Login / Sign Up</h2>
-    <label for="email">Email</label>
     <input type="email" id="email" placeholder="Email"><br>
-    <label for="password">Password</label>
     <input type="password" id="password" placeholder="Password"><br>
     <button id="login-btn">Login</button>
     <button id="signup-btn">Sign Up</button>
@@ -59,7 +57,7 @@
   <div id="dashboard">
     <div class="dashboard-header">
       <div class="dashboard-user">
-        <img id="dash-avatar" src="" alt="User avatar" style="display:none;">
+        <img id="dash-avatar" src="" alt="" style="display:none; width:80px; height:80px; border-radius:50%;">
         <div>
           <div id="dash-name"></div>
           <div class="small" id="dash-email"></div>
@@ -69,6 +67,13 @@
     </div>
 
     <hr>
+
+    <!-- Shared Profile Mini View -->
+    <div id="shared-profile" style="display:none; border:1px solid #ccc; padding:15px; margin:15px 0; border-radius:12px;">
+      <img id="shared-avatar" src="images/avatar1.png" alt="User avatar" style="width:80px; height:80px; border-radius:50%;">
+      <div id="shared-name" style="font-weight:bold; margin-top:8px;"></div>
+    </div>
+
     <h3>Share your link:</h3>
     <input type="text" id="share-link" readonly>
     <button id="copy-link-btn">Copy Link</button>
@@ -80,9 +85,15 @@
 
     <h3>Received Confessions:</h3>
     <ul id="confession-list"></ul>
+
+    <!-- Admin Panel -->
+    <div id="admin-panel" style="display:none; border:2px solid #ff6666; padding:15px; margin-top:20px; border-radius:12px; background:#fff0f5;">
+      <h3>Admin Panel</h3>
+      <ul id="all-confessions-list"></ul>
+    </div>
   </div>
 
-  <footer id="site-footer">Made by Ivan</footer>
+  <footer>Made by Ivan</footer>
 
   <script src="app.js"></script>
 </body>
