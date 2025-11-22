@@ -16,34 +16,44 @@
     <img src="https://i.imgur.com/FK0jx0g.jpg" alt="Chibi Yuta" id="header-avatar">
     <h1 id="site-title">Starbuzz</h1>
   </header>
+
   <div id="auth-container">
     <h2>Login / Sign Up</h2>
     <input type="email" id="email" placeholder="Email"><br>
     <input type="password" id="password" placeholder="Password"><br>
     <button id="login-btn">Login</button>
     <button id="signup-btn">Sign Up</button>
+
+    <!-- Profile Section -->
     <div class="profile-setup">
       <div>
-        <div class="small">Choose a profile avatar (optional)</div>
-        <img class="avatar-option" src="https://i.pravatar.cc/100?img=1" data-url="https://i.pravatar.cc/100?img=1">
-        <img class="avatar-option" src="https://i.pravatar.cc/100?img=2" data-url="https://i.pravatar.cc/100?img=2">
-        <img class="avatar-option" src="https://i.pravatar.cc/100?img=3" data-url="https://i.pravatar.cc/100?img=3">
-        <img class="avatar-option" src="https://i.pravatar.cc/100?img=4" data-url="https://i.pravatar.cc/100?img=4">
+        <div class="small">Choose an avatar from gallery:</div>
+        <div class="gallery">
+          <img class="avatar-option" src="images/avatar1.png" data-url="images/avatar1.png">
+          <img class="avatar-option" src="images/avatar2.png" data-url="images/avatar2.png">
+          <img class="avatar-option" src="images/avatar3.png" data-url="images/avatar3.png">
+          <img class="avatar-option" src="images/avatar4.png" data-url="images/avatar4.png">
+        </div>
       </div>
-      <div>
-        <div class="small">Or paste image URL</div>
-        <input id="avatar-url-input" placeholder="https://...">
+
+      <div style="margin-top:10px;">
+        <div class="small">Or upload your own avatar:</div>
+        <input type="file" id="avatar-upload" accept="image/*">
       </div>
-      <div>
+
+      <div style="margin-top:10px;">
         <div class="small">Display name</div>
         <input id="display-name-input" placeholder="Your display name">
       </div>
-      <div style="text-align:center;">
+
+      <div style="text-align:center; margin-top:10px;">
         <button id="save-profile-btn">Save Profile</button>
-        <div class="small" style="color:#666;">Profile saved to your account</div>
+        <div class="small" style="margin-top:5px; color:#666;">Profile saved to your account</div>
       </div>
     </div>
   </div>
+
+  <!-- Dashboard -->
   <div id="dashboard">
     <div class="dashboard-header">
       <div class="dashboard-user">
@@ -55,18 +65,23 @@
       </div>
       <button id="logout-btn">Logout</button>
     </div>
+
     <hr>
     <h3>Share your link:</h3>
     <input type="text" id="share-link" readonly>
     <button id="copy-link-btn">Copy Link</button>
+
     <h3>Send Anonymous Confession:</h3>
     <input type="text" id="target-link" placeholder="Paste their link here"><br>
     <textarea id="confession-msg" placeholder="Write your confession"></textarea><br>
     <button id="send-confession-btn">Send Confession</button>
+
     <h3>Received Confessions:</h3>
     <ul id="confession-list"></ul>
   </div>
+
   <footer>Made by Ivan</footer>
+
   <script src="app.js"></script>
 </body>
 </html>
