@@ -1,85 +1,193 @@
+/* Body & font */
 body {
-    margin: 0;
-    padding: 0;
-    background: #5EC9FF;
-    font-family: 'PT Serif', serif;
-    overflow-x: hidden;
-    text-align: center;
+  font-family: 'PT Serif', serif;
+  background: #fdf6fb;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    padding: 20px;
+/* Header */
+#site-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#site-header img {
+  display: block;
+  margin: 0 auto 10px auto;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ffb6c1;
 }
 
 #site-title {
-    font-family: 'Mangaba', cursive;
-    font-size: 60px;
-    color: #fff;
-    text-shadow: 0 3px 3px rgba(0,0,0,0.3);
+  font-family: 'Mangaba', cursive;
+  font-size: 48px;
+  color: #ff69b4;
+  margin: 0;
 }
 
-#header-avatar {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+/* Auth container */
+#auth-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #fff0f5;
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-input, textarea, button {
-    padding: 8px;
-    margin: 5px 0;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 16px;
+#auth-container input, #auth-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
+#auth-container button {
+  background: #ff69b4;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px 0;
+}
+
+#auth-container button:hover {
+  background: #ff85c1;
+}
+
+/* Dashboard */
+#dashboard {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-user {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-user img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 12px;
+  object-fit: cover;
+  border: 2px solid #ffb6c1;
+}
+
+#dashboard h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Shared Profile Mini View */
+#shared-profile {
+  display: flex;
+  align-items: center;
+  background: #ffe6f0;
+  border-radius: 12px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+#shared-profile img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+  border: 2px solid #ff69b4;
+}
+
+#shared-profile div {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Confession list */
+#confession-list li, #all-confessions-list li {
+  background: #fff0f5;
+  border-radius: 14px;
+  padding: 12px;
+  margin: 8px 0;
+  word-wrap: break-word;
+}
+
+#all-confessions-list li button {
+  margin-left: 10px;
+  padding: 4px 8px;
+  border: none;
+  background: #ff69b4;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#all-confessions-list li button:hover {
+  background: #ff85c1;
+}
+
+/* Inputs & textareas */
+input, textarea {
+  font-size: 16px;
+}
+
+/* Admin Panel */
+#admin-panel {
+  margin-top: 20px;
+  background: #ffe6e6;
+  padding: 15px;
+  border-radius: 12px;
+  border: 2px solid #ff6666;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  margin-top: 40px;
+  padding: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Buttons */
 button {
-    cursor: pointer;
-    background-color: #ff69b4;
-    color: white;
-    border: none;
+  font-family: 'PT Serif', serif;
 }
 
-button:hover {
-    background-color: #ff1493;
-}
-
-.profile-setup .gallery {
+/* Avatar gallery */
+.gallery {
   display: flex;
   gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 5px;
+  margin-top: 6px;
 }
 
-.profile-setup img.avatar-option {
-  width: 50px;
-  height: 50px;
+.avatar-option {
+  width: 60px;
+  height: 60px;
   border-radius: 50%;
   cursor: pointer;
   border: 2px solid transparent;
+  object-fit: cover;
 }
 
-.profile-setup img.avatar-option.selected {
+.avatar-option.selected {
   border-color: #ff69b4;
-}
-
-#avatar-upload {
-  padding: 5px;
-  border-radius: 8px;
-}
-
-#dashboard {
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 10px;
-}
-
-footer {
-    margin-top: 40px;
-    font-family: 'PT Serif', serif;
-    color: #fff;
-    font-size: 18px;
 }

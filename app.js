@@ -14,8 +14,6 @@ const db = firebase.firestore();
 
 // Admin UID
 const ADMINS = ["HEypV73Y12bVMlM7ZVTUbxVRQc83"];
-
-// Default avatar
 const DEFAULT_AVATAR = "images/avatar1.png";
 
 // Elements
@@ -44,16 +42,16 @@ const displayNameInput = document.getElementById('display-name-input');
 const saveProfileBtn = document.getElementById('save-profile-btn');
 let selectedAvatarUrl = "";
 
-// Shared profile elements
+// Shared profile
 const sharedProfileDiv = document.getElementById('shared-profile');
 const sharedAvatar = document.getElementById('shared-avatar');
 const sharedName = document.getElementById('shared-name');
 
-// Admin elements
+// Admin panel
 const adminPanel = document.getElementById('admin-panel');
 const allConfessionsList = document.getElementById('all-confessions-list');
 
-// Avatar gallery selection
+// Avatar selection
 avatarOptions.forEach(a => {
   a.addEventListener('click', () => {
     avatarOptions.forEach(x => x.classList.remove('selected'));
@@ -63,11 +61,11 @@ avatarOptions.forEach(a => {
 });
 
 // Upload avatar
-avatarUploadInput.addEventListener('change', (e) => {
+avatarUploadInput.addEventListener('change', e => {
   const file = e.target.files[0];
   if(file){
     const reader = new FileReader();
-    reader.onload = function(evt){
+    reader.onload = evt => {
       selectedAvatarUrl = evt.target.result;
       headerAvatar.src = selectedAvatarUrl;
       dashAvatar.src = selectedAvatarUrl;
@@ -76,22 +74,29 @@ avatarUploadInput.addEventListener('change', (e) => {
   }
 });
 
-// Save profile
+// Save profile with nickname
 saveProfileBtn.addEventListener('click', async () => {
   const user = auth.currentUser;
-  if(!user){ alert('Sign in first'); return; }
+  if(!user) return alert('Sign in first');
   const displayName = displayNameInput.value.trim();
+  if(!displayName) return alert('Enter a display name');
+
+  // Prevent duplicate nickname
+  const existing = await db.collection('users').where('nicknameKey','==', displayName.toLowerCase()).get();
+  if(!existing.empty && existing.docs[0].id !== user.uid) return alert('Nickname already taken');
+
   try{
     await db.collection('users').doc(user.uid).set({
       displayName,
-      photoURL: selectedAvatarUrl || null
-    }, { merge: true });
+      photoURL: selectedAvatarUrl || null,
+      nicknameKey: displayName.toLowerCase()
+    }, { merge:true });
     alert('Profile saved!');
     loadAndShowUserProfile(user.uid);
   } catch(e){ console.error(e); alert(e.message); }
 });
 
-// Auth actions
+// Auth
 signupBtn.addEventListener('click', () => {
   const email = emailInput.value.trim();
   const password = passwordInput.value.trim();
@@ -112,52 +117,39 @@ loginBtn.addEventListener('click', () => {
 
 logoutBtn.addEventListener('click', ()=>auth.signOut());
 
-// Load user profile
+// Load profile by UID
 async function loadAndShowUserProfile(uid){
-  try{
+  try {
     const doc = await db.collection('users').doc(uid).get();
     const data = doc.exists ? doc.data() : {};
-    const name = data.displayName || uid;
+    const name = data.displayName || "Anonymous";
     let photo = data.photoURL || DEFAULT_AVATAR;
 
-    const testImage = new Image();
-    testImage.src = photo;
-    testImage.onerror = () => { 
-      photo = DEFAULT_AVATAR;
-      db.collection('users').doc(uid).set({ photoURL: DEFAULT_AVATAR }, { merge:true });
-    };
-
-    // Header
-    headerAvatar.src = photo;
-    headerAvatar.onerror = () => { headerAvatar.src = DEFAULT_AVATAR; };
-    headerAvatar.style.display='inline-block';
-
-    // Dashboard
-    dashAvatar.src = photo;
-    dashAvatar.onerror = () => { dashAvatar.src = DEFAULT_AVATAR; };
-    dashAvatar.style.display='inline-block';
-
+    headerAvatar.src = photo; headerAvatar.style.display='inline-block'; headerAvatar.onerror=()=>{headerAvatar.src=DEFAULT_AVATAR};
+    dashAvatar.src = photo; dashAvatar.style.display='inline-block'; dashAvatar.onerror=()=>{dashAvatar.src=DEFAULT_AVATAR};
     selectedAvatarUrl = photo;
+
     dashName.textContent = name;
     dashEmail.textContent = data.email || "";
-    displayNameInput.value = data.displayName || '';
+    displayNameInput.value = data.displayName || "";
 
-    // Shared mini profile (if applicable)
-    sharedAvatar.src = photo;
-    sharedAvatar.onerror = () => { sharedAvatar.src = DEFAULT_AVATAR; };
+    sharedAvatar.src = photo; sharedAvatar.onerror=()=>{sharedAvatar.src=DEFAULT_AVATAR};
     sharedName.textContent = name;
 
   } catch(e){ console.error(e); }
 }
 
-// Copy share link
-copyBtn.addEventListener('click', async () => {
-  try {
-    await navigator.clipboard.writeText(shareLinkInput.value);
-    alert('Link copied!');
-  } catch(e){
-    alert('Failed to copy link');
-  }
+// Get UID by nickname
+async function getUidByNickname(nickname){
+  const query = await db.collection('users').where('nicknameKey','==',nickname.toLowerCase()).get();
+  if(!query.empty) return query.docs[0].id;
+  return null;
+}
+
+// Copy link
+copyBtn.addEventListener('click', async ()=> {
+  try { await navigator.clipboard.writeText(shareLinkInput.value); alert('Link copied!'); }
+  catch(e){ alert('Failed to copy'); }
 });
 
 // Send confession
@@ -167,8 +159,9 @@ sendConfBtn.addEventListener('click', async ()=>{
   if(!targetUrl || !message) return alert('Enter link & message');
   try{
     const url = new URL(targetUrl);
-    const receiverId = url.searchParams.get('user');
-    if(!receiverId) return alert('Invalid link');
+    const nickname = url.searchParams.get('user');
+    const receiverId = await getUidByNickname(nickname);
+    if(!receiverId) return alert('User not found');
     await db.collection('confessions').add({
       receiverId, message, timestamp: firebase.firestore.FieldValue.serverTimestamp()
     });
@@ -177,44 +170,33 @@ sendConfBtn.addEventListener('click', async ()=>{
   } catch(e){ alert('Invalid link or error'); console.error(e); }
 });
 
-// Load confessions for current user
+// Load confessions
 function loadConfessions(userId){
-  db.collection('confessions')
-    .where('receiverId','==',userId)
+  db.collection('confessions').where('receiverId','==',userId)
     .orderBy('timestamp','desc')
     .onSnapshot(snapshot=>{
       confessionList.innerHTML='';
       snapshot.forEach(doc=>{
         const li=document.createElement('li');
-        li.style.background='#fff0f5';
-        li.style.borderRadius='14px';
-        li.style.padding='10px';
-        li.style.margin='8px 0';
         li.textContent=doc.data().message;
         confessionList.appendChild(li);
       });
-    }, err=>console.error(err));
+    });
 }
 
 // Load all confessions for admin
 function loadAllConfessions(){
-  db.collection('confessions')
-    .orderBy('timestamp','desc')
+  db.collection('confessions').orderBy('timestamp','desc')
     .onSnapshot(snapshot=>{
       allConfessionsList.innerHTML='';
       snapshot.forEach(doc=>{
         const data = doc.data();
         const li = document.createElement('li');
-        li.style.background = "#ffe6e6";
-        li.style.borderRadius = "10px";
-        li.style.padding = "10px";
-        li.style.margin = "6px 0";
         li.textContent = `${data.receiverId}: ${data.message}`;
 
         const delBtn = document.createElement('button');
-        delBtn.textContent = "Delete";
-        delBtn.style.marginLeft = "10px";
-        delBtn.onclick = () => { if(confirm("Delete this confession?")) doc.ref.delete(); };
+        delBtn.textContent="Delete";
+        delBtn.onclick=()=>{ if(confirm("Delete?")) doc.ref.delete(); };
         li.appendChild(delBtn);
 
         allConfessionsList.appendChild(li);
@@ -223,34 +205,40 @@ function loadAllConfessions(){
 }
 
 // Auth state
-auth.onAuthStateChanged(async user => {
+auth.onAuthStateChanged(async user=>{
   const urlParams = new URLSearchParams(window.location.search);
-  const sharedUser = urlParams.get('user');
+  const nickname = urlParams.get('user');
 
   if(user){
     authContainer.style.display='none';
     dashboard.style.display='block';
-    shareLinkInput.value = `${window.location.origin}${window.location.pathname}?user=${user.uid}`;
+
+    const doc = await db.collection('users').doc(user.uid).get();
+    const nick = doc.exists ? doc.data().nicknameKey || user.uid : user.uid;
+    shareLinkInput.value = `${window.location.origin}${window.location.pathname}?user=${nick}`;
+
     await loadAndShowUserProfile(user.uid);
     loadConfessions(user.uid);
 
-    // Admin panel
     if(ADMINS.includes(user.uid)){
-      adminPanel.style.display = "block";
+      adminPanel.style.display='block';
       loadAllConfessions();
-    } else {
-      adminPanel.style.display = "none";
-    }
+    } else adminPanel.style.display='none';
 
-  } else if(sharedUser){
+  } else if(nickname){
     authContainer.style.display='block';
     dashboard.style.display='block';
 
-    const link = `${window.location.origin}${window.location.pathname}?user=${sharedUser}`;
+    const uid = await getUidByNickname(nickname);
+    if(!uid) return alert("User not found");
+
+    const link = `${window.location.origin}${window.location.pathname}?user=${nickname}`;
     targetLinkInput.value = link;
     confessionMsgInput.focus();
 
-    await loadAndShowUserProfile(sharedUser);
+    await loadAndShowUserProfile(uid);
+    loadConfessions(uid);
+
   } else {
     authContainer.style.display='block';
     dashboard.style.display='none';
@@ -258,6 +246,6 @@ auth.onAuthStateChanged(async user => {
     dashAvatar.style.display='none';
     dashName.textContent='';
     dashEmail.textContent='';
-    adminPanel.style.display = "none";
+    adminPanel.style.display='none';
   }
 });
