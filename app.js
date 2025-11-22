@@ -103,7 +103,8 @@ auth.onAuthStateChanged(async user => {
   if(user){
     authContainer.style.display='none';
     dashboard.style.display='block';
-    shareLinkInput.value = `${window.location.origin}?user=${user.uid}`;
+    // Correct share link including /starbuzz/
+    shareLinkInput.value = `${window.location.origin}${window.location.pathname}?user=${user.uid}`;
     await loadAndShowUserProfile(user.uid);
     loadConfessions(user.uid);
   } else {
@@ -138,7 +139,14 @@ async function loadAndShowUserProfile(uid){
 }
 
 // Copy link
-copyBtn.addEventListener('click', ()=>{ shareLinkInput.select(); document.execCommand('copy'); alert('Link copied!'); });
+copyBtn.addEventListener('click', async () => {
+  try {
+    await navigator.clipboard.writeText(shareLinkInput.value);
+    alert('Link copied!');
+  } catch(e){
+    alert('Failed to copy link');
+  }
+});
 
 // Send confession
 sendConfBtn.addEventListener('click', async ()=>{
@@ -175,3 +183,14 @@ function loadConfessions(userId){
       });
     }, err=>console.error(err));
 }
+
+// Auto-fill target link if ?user= is in URL
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const sharedUser = params.get('user');
+  if(sharedUser){
+    const link = `${window.location.origin}${window.location.pathname}?user=${sharedUser}`;
+    targetLinkInput.value = link;
+    confessionMsgInput.focus();
+  }
+});

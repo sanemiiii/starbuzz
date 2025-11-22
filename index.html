@@ -19,7 +19,9 @@
 
   <div id="auth-container">
     <h2>Login / Sign Up</h2>
+    <label for="email">Email</label>
     <input type="email" id="email" placeholder="Email"><br>
+    <label for="password">Password</label>
     <input type="password" id="password" placeholder="Password"><br>
     <button id="login-btn">Login</button>
     <button id="signup-btn">Sign Up</button>
@@ -29,10 +31,10 @@
       <div>
         <div class="small">Choose an avatar from gallery:</div>
         <div class="gallery">
-          <img class="avatar-option" src="images/avatar1.png" data-url="images/avatar1.png">
-          <img class="avatar-option" src="images/avatar2.png" data-url="images/avatar2.png">
-          <img class="avatar-option" src="images/avatar3.png" data-url="images/avatar3.png">
-          <img class="avatar-option" src="images/avatar4.png" data-url="images/avatar4.png">
+          <img class="avatar-option" src="images/avatar1.png" data-url="images/avatar1.png" alt="Avatar 1">
+          <img class="avatar-option" src="images/avatar2.png" data-url="images/avatar2.png" alt="Avatar 2">
+          <img class="avatar-option" src="images/avatar3.png" data-url="images/avatar3.png" alt="Avatar 3">
+          <img class="avatar-option" src="images/avatar4.png" data-url="images/avatar4.png" alt="Avatar 4">
         </div>
       </div>
 
@@ -57,7 +59,7 @@
   <div id="dashboard">
     <div class="dashboard-header">
       <div class="dashboard-user">
-        <img id="dash-avatar" src="" alt="" style="display:none;">
+        <img id="dash-avatar" src="" alt="User avatar" style="display:none;">
         <div>
           <div id="dash-name"></div>
           <div class="small" id="dash-email"></div>
@@ -80,7 +82,7 @@
     <ul id="confession-list"></ul>
   </div>
 
-  <footer>Made by Ivan</footer>
+  <footer id="site-footer">Made by Ivan</footer>
 
   <script src="app.js"></script>
 </body>
