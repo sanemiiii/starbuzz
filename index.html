@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Starbuzz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mangaba&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <header id="site-header">
+    <img src="https://i.imgur.com/FK0jx0g.jpg" alt="Chibi Yuta" id="header-avatar">
+    <h1 id="site-title">Starbuzz</h1>
+  </header>
+  <div id="auth-container">
+    <h2>Login / Sign Up</h2>
+    <input type="email" id="email" placeholder="Email"><br>
+    <input type="password" id="password" placeholder="Password"><br>
+    <button id="login-btn">Login</button>
+    <button id="signup-btn">Sign Up</button>
+    <div class="profile-setup">
+      <div>
+        <div class="small">Choose a profile avatar (optional)</div>
+        <img class="avatar-option" src="https://i.pravatar.cc/100?img=1" data-url="https://i.pravatar.cc/100?img=1">
+        <img class="avatar-option" src="https://i.pravatar.cc/100?img=2" data-url="https://i.pravatar.cc/100?img=2">
+        <img class="avatar-option" src="https://i.pravatar.cc/100?img=3" data-url="https://i.pravatar.cc/100?img=3">
+        <img class="avatar-option" src="https://i.pravatar.cc/100?img=4" data-url="https://i.pravatar.cc/100?img=4">
+      </div>
+      <div>
+        <div class="small">Or paste image URL</div>
+        <input id="avatar-url-input" placeholder="https://...">
+      </div>
+      <div>
+        <div class="small">Display name</div>
+        <input id="display-name-input" placeholder="Your display name">
+      </div>
+      <div style="text-align:center;">
+        <button id="save-profile-btn">Save Profile</button>
+        <div class="small" style="color:#666;">Profile saved to your account</div>
+      </div>
+    </div>
+  </div>
+  <div id="dashboard">
+    <div class="dashboard-header">
+      <div class="dashboard-user">
+        <img id="dash-avatar" src="" alt="" style="display:none;">
+        <div>
+          <div id="dash-name"></div>
+          <div class="small" id="dash-email"></div>
+        </div>
+      </div>
+      <button id="logout-btn">Logout</button>
+    </div>
+    <hr>
+    <h3>Share your link:</h3>
+    <input type="text" id="share-link" readonly>
+    <button id="copy-link-btn">Copy Link</button>
+    <h3>Send Anonymous Confession:</h3>
+    <input type="text" id="target-link" placeholder="Paste their link here"><br>
+    <textarea id="confession-msg" placeholder="Write your confession"></textarea><br>
+    <button id="send-confession-btn">Send Confession</button>
+    <h3>Received Confessions:</h3>
+    <ul id="confession-list"></ul>
+  </div>
+  <footer>Made by Ivan</footer>
+  <script src="app.js"></script>
+</body>
+</html>

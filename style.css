@@ -1,0 +1,64 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #5EC9FF;
+    font-family: 'PT Serif', serif;
+    overflow-x: hidden;
+    text-align: center;
+}
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+}
+#site-title {
+    font-family: 'Mangaba', cursive;
+    font-size: 60px;
+    color: #fff;
+    text-shadow: 0 3px 3px rgba(0,0,0,0.3);
+}
+#header-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+input, textarea, button {
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+button {
+    cursor: pointer;
+    background-color: #ff69b4;
+    color: white;
+    border: none;
+}
+button:hover {
+    background-color: #ff1493;
+}
+.profile-setup img.avatar-option {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    margin: 4px;
+    border: 2px solid transparent;
+}
+.profile-setup img.avatar-option.selected {
+    border-color: #ff69b4;
+}
+#dashboard {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 10px;
+}
+footer {
+    margin-top: 40px;
+    font-family: 'PT Serif', serif;
+    color: #fff;
+    font-size: 18px;
+}
